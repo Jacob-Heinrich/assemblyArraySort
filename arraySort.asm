@@ -9,15 +9,15 @@ COUNTSIZE = HI + 1 - LO
 
 .data
 
-intro			 			BYTE	"Arrays, Addressing, and Stack-Passed Parameters.", 0
-intro2					BYTE	"This project will generate a random array between a specific range, sort it, find the median, and display the sorted and unsorted arrays.",0
-goodBye					BYTE	"Good Bye, Have a nice day.",0
+intro		 	BYTE	"Arrays, Addressing, and Stack-Passed Parameters.", 0
+intro2			BYTE	"This project will generate a random array between a specific range, sort it, find the median, and display the sorted and unsorted arrays.",0
+goodBye			BYTE	"Good Bye, Have a nice day.",0
 unsortString		BYTE	"Unsorted Array",0
 medianString		BYTE	"Median of Sorted List: ",0
-countString			BYTE	"Count Array",0
-sortString			BYTE	"Sorted Array",0
-randArray				DWORD	ARRAYSIZE DUP(?)
-countArray			DWORD	countSize DUP(?)
+countString		BYTE	"Count Array",0
+sortString		BYTE	"Sorted Array",0
+randArray		DWORD	ARRAYSIZE DUP(?)
+countArray		DWORD	countSize DUP(?)
 
 
 
@@ -36,7 +36,7 @@ main PROC
 	CALL	displayList
 	PUSH	OFFSET randArray
 	CALL	sortList
-	PUSH  ARRAYSIZE
+	PUSH  	ARRAYSIZE
 	PUSH	OFFSET randArray
 	PUSH	OFFSET sortString
 	CALL	displayList
@@ -74,16 +74,16 @@ main ENDP
 introduction PROC
 
 	PUSH	EBP
-	MOV		EBP, ESP
-	MOV		EDX, [EBP + 12]
+	MOV	EBP, ESP
+	MOV	EDX, [EBP + 12]
 	CALL	WriteString
 	CALL	CrLf
 	CALL	CrLf
-	MOV		EDX, [EBP + 8]
+	MOV	EDX, [EBP + 8]
 	CALL	WriteString
 	CALL	CrLf
-	POP		EBP
-	RET		8
+	POP	EBP
+	RET	8
 
 introduction ENDP
 
@@ -105,22 +105,22 @@ introduction ENDP
 fillArray PROC
 
 		PUSH	EBP
-		MOV		EBP, ESP
+		MOV	EBP, ESP
 
-		MOV		ECX, ARRAYSIZE
-		MOV		EDX, [EBP + 8]
+		MOV	ECX, ARRAYSIZE
+		MOV	EDX, [EBP + 8]
 
 	_fillLoop:
-		MOV		EAX, HI
-		SUB		EAX, LO - 1
+		MOV	EAX, HI
+		SUB	EAX, LO - 1
 		CALL	RandomRange
-		ADD		EAX, LO
-		MOV		[EDX], EAX
-		ADD		EDX, 4
+		ADD	EAX, LO
+		MOV	[EDX], EAX
+		ADD	EDX, 4
 		LOOP	_fillLoop
 
-		POP EBP
-		RET 4
+		POP 	EBP
+		RET 	4
 
 fillArray ENDP
 
@@ -143,30 +143,30 @@ sortList PROC
 
 		; sets up starting conditions for bubble sort loop
 		PUSH	EBP
-		MOV		EBP, ESP
-		MOV		ESI, [EBP + 8]
-		MOV		ECX, ARRAYSIZE - 1
+		MOV	EBP, ESP
+		MOV	ESI, [EBP + 8]
+		MOV	ECX, ARRAYSIZE - 1
 		CLD
 		LODSD
 
 	_mainLoop:
 		PUSH	ECX
 		PUSH	ESI
-		MOV		ECX, ARRAYSIZE - 1
+		MOV	ECX, ARRAYSIZE - 1
 		CALL	exchangeElements
-		POP		ESI
-		POP		ECX
-		MOV		EAX, [ESI]
+		POP	ESI
+		POP	ECX
+		MOV	EAX, [ESI]
 		LOOP	_mainLoop
 
 		; sorts the first element when the rest is already sorted
-		MOV		ESI, [EBP + 8]
-		MOV		ECX, ARRAYSIZE - 1
-		MOV		EAX, [ESI][0]
+		MOV	ESI, [EBP + 8]
+		MOV	ECX, ARRAYSIZE - 1
+		MOV	EAX, [ESI][0]
 		CALL	exchangeElements
 
-		POP		EBP
-		RET		4
+		POP	EBP
+		RET	4
 
 sortList ENDP
 
@@ -189,20 +189,20 @@ exchangeElements PROC
 
 	_swapLoop:
 		; loop to swap the elements if the first is greater
-		MOV		EBX, [ESI]
-		CMP		EAX, EBX
-		JG		_swap
-		MOV		EAX, [ESI]
-		ADD		ESI, 4
+		MOV	EBX, [ESI]
+		CMP	EAX, EBX
+		JG	_swap
+		MOV	EAX, [ESI]
+		ADD	ESI, 4
 		LOOP	_swapLoop
 
 		RET
 
 	_swap:
-		MOV		[ESI - 4], EBX
-		MOV		[ESI], EAX
-		MOV		EAX, [ESI]
-		ADD		ESI, 4
+		MOV	[ESI - 4], EBX
+		MOV	[ESI], EAX
+		MOV	EAX, [ESI]
+		ADD	ESI, 4
 		LOOP	_swapLoop
 
 		RET
@@ -227,40 +227,40 @@ exchangeElements ENDP
 displayMedian PROC
 
 		PUSH	EBP
-		MOV		EBP, ESP
+		MOV	EBP, ESP
 
 		; gets the median of the array by dividing array length in half
-		MOV		ESI, [EBP + 12]
-		MOV		EDX, 0
-		MOV		EAX, ARRAYSIZE - 1
-		MOV		EBX, 2
-		DIV		EBX
-		CMP		EDX, 0
-		JNE		_roundUp
-		MOV		EBX, 4
-		MUL		EBX
-		ADD		ESI, EAX
-		MOV		EAX, [ESI]
-		JMP		_display
+		MOV	ESI, [EBP + 12]
+		MOV	EDX, 0
+		MOV	EAX, ARRAYSIZE - 1
+		MOV	EBX, 2
+		DIV	EBX
+		CMP	EDX, 0
+		JNE	_roundUp
+		MOV	EBX, 4
+		MUL	EBX
+		ADD	ESI, EAX
+		MOV	EAX, [ESI]
+		JMP	_display
 
 	_roundUp:
 		; if array is an odd length, will round up
-		ADD		EAX, 1
-		MOV		EBX, 4
-		MUL		EBX
-		ADD		ESI, EAX
-		MOV		EAX, [ESI]
-		JMP		_display
+		ADD	EAX, 1
+		MOV	EBX, 4
+		MUL	EBX
+		ADD	ESI, EAX
+		MOV	EAX, [ESI]
+		JMP	_display
 
 	_display:
 		; displays median
-		MOV		EDX, [EBP + 8]
+		MOV	EDX, [EBP + 8]
 		CALL	WriteString
 		CALL	WriteDec
 		CALL	CrLf
 
-		POP		EBP
-		RET		8
+		POP	EBP
+		RET	8
 
 displayMedian ENDP
 
@@ -283,38 +283,38 @@ displayMedian ENDP
 displayList PROC
 
 		PUSH	EBP
-		MOV		EBP, ESP
+		MOV	EBP, ESP
 
 		; displays identifier string and formats the first line with a space
 		CALL	CrLf
-		MOV		EDX, [EBP + 8]
+		MOV	EDX, [EBP + 8]
 		CALL	WriteString
 		CALL	CrLf
-		MOV		ESI, [EBP+12]
-		MOV		ECX, [EBP + 16]
-		MOV		EDX, 1
-		MOV		AL,  32
+		MOV	ESI, [EBP+12]
+		MOV	ECX, [EBP + 16]
+		MOV	EDX, 1
+		MOV	AL,  32
 		CALl	WriteChar
 
 	_print:
 		; iterates through the array and display the elements
-		MOV		EAX, [ESI]
+		MOV	EAX, [ESI]
 		CALL	WriteDec
-		CMP		EDX, 20
-		JNE		_end
-		MOV		EDX, 0
+		CMP	EDX, 20
+		JNE	_end
+		MOV	EDX, 0
 		CALL	CrLf
 
 	_end:
-		ADD		EDX, 1
-		MOV		AL,  32
+		ADD	EDX, 1
+		MOV	AL,  32
 		CALL	WriteChar
-		ADD		ESI, 4
+		ADD	ESI, 4
 		LOOP	_print
 		CALL	CrLf
 
-		POP		EBP
-		RET		8
+		POP	EBP
+		RET	8
 
 displayList ENDP
 
@@ -338,27 +338,27 @@ displayList ENDP
 countList PROC
 
 		PUSH	EBP
-		MOV		EBP, ESP
+		MOV	EBP, ESP
 
-		MOV		ESI, [EBP + 12]
+		MOV	ESI, [EBP + 12]
 		MOV     EDI, [EBP + 8]
-		MOV		ECX, ARRAYSIZE
+		MOV	ECX, ARRAYSIZE
 		CLD
 
 	_countLoop:
 		; gets the count and index of each element
 		LODSD
-		MOV		EDX, 0
-		MOV		EBX, 4
-		SUB		EAX, LO
-		MUL		EBX
-		MOV		EDX, [EDI + EAX]
-		ADD		EDX, 1
-		MOV		[EDI + EAX], EDX
+		MOV	EDX, 0
+		MOV	EBX, 4
+		SUB	EAX, LO
+		MUL	EBX
+		MOV	EDX, [EDI + EAX]
+		ADD	EDX, 1
+		MOV	[EDI + EAX], EDX
 		LOOP	_countLoop
 
-		POP		EBP
-		RET		8
+		POP	EBP
+		RET	8
 
 countList ENDP
 
@@ -380,14 +380,14 @@ countList ENDP
 farewell PROC
 
 	PUSH	EBP
-	MOV		EBP,ESP
+	MOV	EBP,ESP
 
 	CALL	CrLf
-	MOV		EDX,[EBP + 8]
+	MOV	EDX,[EBP + 8]
 	CALL	WriteString
 
-	POP		EBP
-	RET		4
+	POP	EBP
+	RET	4
 
 farewell ENDP
 
